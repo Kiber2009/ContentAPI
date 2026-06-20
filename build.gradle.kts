@@ -26,7 +26,7 @@ dependencies {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(file(".java-version").readText().trim()))
 }
 
 tasks {
