@@ -13,11 +13,24 @@ version = "1.0.0"
 
 val mcVersion = "26.1.2"
 val pluginId = "ContentAPI"
+val author = "Kiber2009"
 
-tasks.register("printVersion") {
-    description = ""
-    doLast {
-        println(project.version)
+tasks {
+    register("printVersion") {
+        description = ""
+        doLast {
+            println(project.version)
+        }
+    }
+
+    jar {
+        manifest {
+            attributes(
+                "Implementation-Title" to rootProject.name,
+                "Implementation-Version" to project.version,
+                "Implementation-Vendor" to author
+            )
+        }
     }
 }
 
@@ -46,7 +59,8 @@ tasks {
         val props = mapOf(
             "version" to version,
             "mcVersion" to mcVersion,
-            "pluginId" to pluginId
+            "pluginId" to pluginId,
+            "author" to author
         )
         inputs.properties(props)
         filteringCharset = "UTF-8"

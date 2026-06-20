@@ -2,4 +2,4 @@ name: $pluginId
 version: $version
 main: io.github.kiber2009.plugin.contentapi.ContentApiPlugin
 api-version: $mcVersion
-author: Kiber2009
+author: $author
