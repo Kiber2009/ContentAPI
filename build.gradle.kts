@@ -5,6 +5,7 @@ plugins {
     `maven-publish`
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id("io.papermc.hangar-publish-plugin") version "0.1.4"
+    id("com.modrinth.minotaur") version "2.+"
 }
 
 group = "io.github.kiber2009.plugin"
@@ -74,13 +75,15 @@ publishing {
     }
 }
 
+val readme = project.file("README.md").readText()
+
 hangarPublish {
     publications.register("plugin") {
         version = project.version as String
         channel = "Release"
         id = pluginId
         apiKey = System.getenv("HANGAR_API_TOKEN")
-        pages.resourcePage(project.file("README.md").readText())
+        pages.resourcePage(readme)
         platforms {
             register(Platforms.PAPER) {
                 jar = tasks.jar.flatMap { it.archiveFile }
@@ -88,4 +91,14 @@ hangarPublish {
             }
         }
     }
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = pluginId.lowercase()
+    versionType = "release"
+    gameVersions = listOf(mcVersion)
+    loaders = listOf("paper")
+    uploadFile.set(tasks.jar)
+    syncBodyFrom = readme
 }
