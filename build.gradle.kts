@@ -1,13 +1,17 @@
+import io.papermc.hangarpublishplugin.model.Platforms
+
 plugins {
     java
     `maven-publish`
     id("xyz.jpenilla.run-paper") version "2.3.1"
+    id("io.papermc.hangar-publish-plugin") version "0.1.4"
 }
 
 group = "io.github.kiber2009.plugin"
 version = "1.0.0"
 
 val mcVersion = "26.1.2"
+val pluginId = "ContentAPI"
 
 repositories {
     mavenCentral()
@@ -31,7 +35,11 @@ tasks {
     }
 
     processResources {
-        val props = mapOf("version" to version, "mcVersion" to mcVersion)
+        val props = mapOf(
+            "version" to version,
+            "mcVersion" to mcVersion,
+            "pluginId" to pluginId
+        )
         inputs.properties(props)
         filteringCharset = "UTF-8"
         filesMatching("plugin.yml") {
@@ -44,6 +52,22 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
+        }
+    }
+}
+
+hangarPublish {
+    publications.register("plugin") {
+        version = project.version as String
+        channel = "Release"
+        id = pluginId
+        apiKey = System.getenv("HANGAR_API_TOKEN")
+        pages.resourcePage(project.file("README.md").readText())
+        platforms {
+            register(Platforms.PAPER) {
+                jar = tasks.jar.flatMap { it.archiveFile }
+                platformVersions = listOf(mcVersion)
+            }
         }
     }
 }
