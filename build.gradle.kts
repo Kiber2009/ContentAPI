@@ -13,6 +13,13 @@ version = "1.0.0"
 val mcVersion = "26.1.2"
 val pluginId = "ContentAPI"
 
+tasks.register("printVersion") {
+    description = ""
+    doLast {
+        println(project.version)
+    }
+}
+
 repositories {
     mavenCentral()
     maven {
