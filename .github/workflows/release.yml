@@ -56,12 +56,12 @@ jobs:
         if: ${{ inputs.modrinth }}
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-      - run: ./gradlew publish
+      - run: ./gradlew publishAllPublicationsToGitHubPackagesRepository
         if: ${{ inputs.github-packages }}
         env:
           GITHUB_PACKAGES_USERNAME: Kiber2009
           GITHUB_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: ./gradlew publish
+      - run: ./gradlew publishAllPublicationsToMavenCentralRepository
         if: ${{ inputs.maven-central }}
         env:
           MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
