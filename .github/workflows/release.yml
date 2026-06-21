@@ -3,14 +3,19 @@ on:
     inputs:
       github-release:
         type: boolean
+        description: "GitHub Release"
       hangar:
         type: boolean
+        description: "Hangar"
       github-packages:
         type: boolean
+        description: "GitHub Packages"
       maven-central:
         type: boolean
+        description: "Maven Central"
       modrinth:
         type: boolean
+        description: "Modrinth"
 permissions:
   contents: write
   packages: write
