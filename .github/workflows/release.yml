@@ -7,6 +7,8 @@ on:
         type: boolean
       github-packages:
         type: boolean
+      maven-central:
+        type: boolean
       modrinth:
         type: boolean
 permissions:
@@ -15,6 +17,10 @@ permissions:
 jobs:
   upload:
     runs-on: ubuntu-latest
+    env:
+      GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+      GPG_KEY_ASCII: ${{ secrets.GPG_KEY_ASCII }}
+      GPG_KEY_PASSWORD: ${{ secrets.GPG_KEY_PASSWORD }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-java@v5
@@ -35,7 +41,7 @@ jobs:
         if: ${{ inputs.github-release }}
         with:
           tag_name: v${{ steps.get_version.outputs.version }}
-          files: build/libs/*
+          files: build/libs/*[!{javadoc}{sources}].jar
           generate_release_notes: true
       - run: ./gradlew publishAllPublicationsToHangar syncPluginPublicationMainResourcePagePageToHangar --stacktrace
         if: ${{ inputs.hangar }}
@@ -50,3 +56,8 @@ jobs:
         env:
           GITHUB_PACKAGES_USERNAME: Kiber2009
           GITHUB_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: ./gradlew publish
+        if: ${{ inputs.maven-central }}
+        env:
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}

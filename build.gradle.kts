@@ -2,6 +2,7 @@ import io.papermc.hangarpublishplugin.model.Platforms
 
 plugins {
     java
+    signing
     `maven-publish`
     id("xyz.jpenilla.run-paper") version "3.0.2"
     id("io.papermc.hangar-publish-plugin") version "0.1.4"
@@ -32,25 +33,7 @@ tasks {
             )
         }
     }
-}
 
-repositories {
-    mavenCentral()
-    maven {
-        name = "papermc-repo"
-        url = uri("https://repo.papermc.io/repository/maven-public/")
-    }
-}
-
-dependencies {
-    compileOnly("io.papermc.paper:paper-api:${mcVersion}.build.+")
-}
-
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(file(".java-version").readText().trim()))
-}
-
-tasks {
     runServer {
         minecraftVersion(mcVersion)
     }
@@ -70,6 +53,33 @@ tasks {
     }
 }
 
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
+}
+
+dependencies {
+    compileOnly("io.papermc.paper:paper-api:${mcVersion}.build.+")
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(file(".java-version").readText().trim())
+    withJavadocJar()
+    withSourcesJar()
+}
+
+signing {
+    sign(publishing.publications)
+    useInMemoryPgpKeys(
+        System.getenv("GPG_KEY_ID"),
+        System.getenv("GPG_KEY_ASCII"),
+        System.getenv("GPG_KEY_PASSWORD")
+    )
+}
+
 publishing {
     repositories {
         maven {
@@ -80,11 +90,43 @@ publishing {
                 password = System.getenv("GITHUB_PACKAGES_TOKEN")
             }
         }
+        maven {
+            name = "MavenCentral"
+            url = uri("https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/")
+            credentials {
+                username = System.getenv("MAVEN_CENTRAL_USERNAME")
+                password = System.getenv("MAVEN_CENTRAL_PASSWORD")
+            }
+        }
     }
 
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
+            pom {
+                name = "ContentAPI"
+                description = "API for adding custom content"
+                url = "https://github.com/Kiber2009/ContentAPI"
+                licenses {
+                    license {
+                        name = "MIT"
+                        url = "https://raw.githubusercontent.com/Kiber2009/ContentAPI/refs/heads/main/LICENSE"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "Kiber2009"
+                        name = "Kiber2009"
+                        email = "92222946+Kiber2009@users.noreply.github.com"
+                        url = "https://github.com/Kiber2009"
+                    }
+                }
+                scm {
+                    connection = "scm:git:https://github.com/Kiber2009/ContentAPI.git"
+                    developerConnection = "scm:git@github.com:Kiber2009/ContentAPI.git"
+                    url = "https://github.com/Kiber2009/ContentAPI"
+                }
+            }
         }
     }
 }
