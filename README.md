@@ -1,2 +1,2 @@
 # ContentAPI
-API for adding custom content 
+API for adding custom content
