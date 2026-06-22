@@ -1,4 +1,8 @@
 import io.papermc.hangarpublishplugin.model.Platforms
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
+import java.util.Base64
 
 plugins {
     java
@@ -9,7 +13,9 @@ plugins {
     id("com.modrinth.minotaur") version "2.+"
 }
 
-group = "io.github.kiber2009.plugin"
+val namespace = "io.github.kiber2009"
+
+group = "$namespace.plugin"
 version = "1.0.0"
 
 val mcVersion = "26.1.2"
@@ -21,6 +27,28 @@ tasks {
         description = ""
         doLast {
             println(project.version)
+        }
+    }
+
+    register("publishMavenCentral") {
+        description = ""
+        dependsOn("publishAllPublicationsToMavenCentralRepository")
+        doLast {
+            val path = "https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/$namespace?publishing_type=automatic"
+            val auth = Base64.getEncoder().encodeToString(
+                "${System.getenv("MAVEN_CENTRAL_USERNAME")}:${System.getenv("MAVEN_CENTRAL_PASSWORD")}"
+                    .toByteArray()
+            )
+            val response = HttpClient.newHttpClient().send(
+                HttpRequest.newBuilder()
+                    .uri(uri(path))
+                    .GET()
+                    .header("Authorization", "Bearer $auth")
+                    .build(), HttpResponse.BodyHandlers.ofString()
+            )
+            assert(response.statusCode() == 200) {
+                response.body()
+            }
         }
     }
 
