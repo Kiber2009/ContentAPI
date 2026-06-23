@@ -34,7 +34,7 @@ tasks {
         description = ""
         dependsOn("publishAllPublicationsToMavenCentralRepository")
         doLast {
-            val path = "https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/$namespace?publishing_type=automatic"
+            val path = "https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/$namespace?publishing_type=user_managed"
             val auth = Base64.getEncoder().encodeToString(
                 "${System.getenv("MAVEN_CENTRAL_USERNAME")}:${System.getenv("MAVEN_CENTRAL_PASSWORD")}"
                     .toByteArray()
