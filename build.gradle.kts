@@ -42,7 +42,7 @@ tasks {
             val response = HttpClient.newHttpClient().send(
                 HttpRequest.newBuilder()
                     .uri(uri(path))
-                    .GET()
+                    .POST(HttpRequest.BodyPublishers.noBody())
                     .header("Authorization", "Bearer $auth")
                     .build(), HttpResponse.BodyHandlers.ofString()
             )
