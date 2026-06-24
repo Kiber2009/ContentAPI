@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public final class ItemsManager implements Listener {
+final class ItemsManager implements Listener {
     @EventHandler
     private static void onPlayerInteract(final PlayerInteractEvent event) {
         if (!event.getAction().isRightClick())
