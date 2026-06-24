@@ -23,7 +23,7 @@ public class GlobalRegistry<T> {
         map.put(key, value);
     }
 
-    public void register(final @NonNull LocalRegistry<T> registry) {
+    public void register(final @NonNull LocalRegistry<? extends T> registry) {
         for (final NamespacedKey key : registry.keySet())
             registerItem(key, Objects.requireNonNull(registry.get(key)));
     }
