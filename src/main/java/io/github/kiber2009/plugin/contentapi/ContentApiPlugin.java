@@ -21,6 +21,7 @@ public final class ContentApiPlugin extends JavaPlugin {
         instance = this;
 
         getServer().getPluginManager().registerEvents(new ItemsManager(), this);
+        getServer().getPluginManager().registerEvents(new RecipesManager(), this);
 
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
                 commands.registrar().register(Commands.literal("contentapi")

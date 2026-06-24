@@ -11,11 +11,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-public sealed class GlobalRegistry<T> permits ItemGlobalRegistry {
+public class GlobalRegistry<T> {
     @SuppressWarnings("StaticInitializerReferencesSubClass")
     public static final ItemGlobalRegistry ITEMS = new ItemGlobalRegistry();
 
-    private final Map<NamespacedKey, T> map = new HashMap<>();
+    protected final Map<NamespacedKey, T> map = new HashMap<>();
 
     protected void registerItem(final @NonNull NamespacedKey key, final @NonNull T value) {
         if (map.containsKey(key))
@@ -23,7 +23,7 @@ public sealed class GlobalRegistry<T> permits ItemGlobalRegistry {
         map.put(key, value);
     }
 
-    public void register(final @NonNull LocalRegistry<T> registry) {
+    public void register(final @NonNull LocalRegistry<? extends T> registry) {
         for (final NamespacedKey key : registry.keySet())
             registerItem(key, Objects.requireNonNull(registry.get(key)));
     }
