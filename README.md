@@ -1,4 +1,4 @@
-| [Modrinth](https://modrinth.com/plugin/contentapi) | [Hangar](https://hangar.papermc.io/Kiber2009/ContentAPI) |
+| [Modrinth](https://modrinth.com/plugin/contentapi) | [Hangar](https://hangar.papermc.io/Kiber2009/ContentAPI) | [MavenCentral](https://central.sonatype.com/artifact/io.github.kiber2009.plugin/contentapi) |
 
 # ContentAPI
 API for adding custom content to PaperMC-based servers
