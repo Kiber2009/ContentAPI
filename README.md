@@ -6,6 +6,9 @@ API for adding custom content to PaperMC-based servers
 ## Features
 - Registry system
 - Argument types for `com.mojang.brigadier`
+  - Custom item
+- PersistentData types
+  - `org.bukkit.NamespacedKey`
 - Custom items
 - Custom recipes (WIP)
   - Crafting
