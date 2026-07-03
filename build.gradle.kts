@@ -16,7 +16,7 @@ plugins {
 val namespace = "io.github.kiber2009"
 
 group = "$namespace.plugin"
-version = "1.0.0"
+version = "1.1.0"
 
 val mcVersion = "26.1.2"
 val pluginId = "ContentAPI"
@@ -90,6 +90,7 @@ repositories {
 }
 
 dependencies {
+    @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
     compileOnly("io.papermc.paper:paper-api:${mcVersion}.build.+")
 }
 
