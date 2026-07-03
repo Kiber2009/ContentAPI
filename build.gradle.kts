@@ -134,7 +134,7 @@ publishing {
             from(components["java"])
             pom {
                 name = "ContentAPI"
-                description = "API for adding custom content"
+                description = "API for adding custom content to PaperMC-based servers"
                 url = "https://github.com/Kiber2009/ContentAPI"
                 licenses {
                     license {
