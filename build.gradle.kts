@@ -17,6 +17,7 @@ val namespace = "io.github.kiber2009"
 
 group = "$namespace.plugin"
 version = "1.1.0"
+description = "API for adding custom content to PaperMC-based servers"
 
 val mcVersion = "26.1.2"
 val pluginId = "ContentAPI"
@@ -71,7 +72,8 @@ tasks {
             "version" to version,
             "mcVersion" to mcVersion,
             "pluginId" to pluginId,
-            "author" to author
+            "author" to author,
+            "description" to project.description
         )
         inputs.properties(props)
         filteringCharset = "UTF-8"
@@ -134,7 +136,7 @@ publishing {
             from(components["java"])
             pom {
                 name = "ContentAPI"
-                description = "API for adding custom content to PaperMC-based servers"
+                description = project.description
                 url = "https://github.com/Kiber2009/ContentAPI"
                 licenses {
                     license {

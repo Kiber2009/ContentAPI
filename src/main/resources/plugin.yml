@@ -3,3 +3,4 @@ version: $version
 main: io.github.kiber2009.plugin.contentapi.ContentApiPlugin
 api-version: $mcVersion
 author: $author
+description: $description
