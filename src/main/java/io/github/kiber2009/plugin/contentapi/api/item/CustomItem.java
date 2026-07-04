@@ -15,8 +15,9 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.function.Predicate;
 
-public abstract class CustomItem {
+public abstract class CustomItem implements Predicate<@Nullable ItemStack> {
     public static final NamespacedKey CUSTOM_ITEM_TAG =
             new NamespacedKey(ContentApiPlugin.getInstance(), "custom_item");
 
@@ -28,7 +29,7 @@ public abstract class CustomItem {
         this.properties = properties;
     }
 
-   @Contract(value = "_ -> new", pure = true)
+    @Contract(value = "_ -> new", pure = true)
     public @NonNull ItemStack getItemStack(final int amount) {
         return properties.getItemStack(id, amount);
     }
@@ -38,8 +39,18 @@ public abstract class CustomItem {
         return getItemStack(1);
     }
 
+    /**
+     * @deprecated Use {@link #test(ItemStack)} instead.
+     */
+    @Deprecated(since = "1.2.0", forRemoval = true)
     @Contract(value = "null -> false", pure = true)
     public boolean match(final @Nullable ItemStack stack) {
+        return test(stack);
+    }
+
+    @Override
+    @Contract(value = "null -> false", pure = true)
+    public boolean test(final @Nullable ItemStack stack) {
         if (stack == null)
             return false;
 

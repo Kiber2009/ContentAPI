@@ -8,6 +8,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.function.Predicate;
 
+@Deprecated(forRemoval = true, since = "1.2.0")
 public class CustomItemRecipeChoice implements Predicate<@Nullable ItemStack> {
     private final CustomItem item;
 
@@ -18,6 +19,6 @@ public class CustomItemRecipeChoice implements Predicate<@Nullable ItemStack> {
     @Override
     @Contract(value = "null -> false", pure = true)
     public boolean test(final @Nullable ItemStack stack) {
-        return item.match(stack);
+        return item.test(stack);
     }
 }
