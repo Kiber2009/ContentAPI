@@ -1,12 +1,18 @@
 package io.github.kiber2009.plugin.contentapi;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.github.kiber2009.plugin.contentapi.commands.GiveCommand;
+import io.github.kiber2009.plugin.contentapi.uploading.LobfileUploadProvider;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NonNull;
 
 public final class ContentApiPlugin extends JavaPlugin {
+    public static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(LobfileUploadProvider.Response.class, LobfileUploadProvider.Response.Deserializer.INSTANCE)
+            .create();
 
     private static ContentApiPlugin instance;
 
