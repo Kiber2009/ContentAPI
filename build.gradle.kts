@@ -23,65 +23,63 @@ val mcVersion = "26.1.2"
 val pluginId = "ContentAPI"
 val author = "Kiber2009"
 
-tasks {
-    register("printVersion") {
-        description = ""
-        doLast {
-            println(project.version)
-        }
+tasks.register("printVersion") {
+    description = ""
+    doLast {
+        println(project.version)
     }
+}
 
-    register("publishMavenCentral") {
-        description = ""
-        dependsOn("publishAllPublicationsToMavenCentralRepository")
-        doLast {
-            val path =
-                "https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/$namespace?publishing_type=automatic"
-            val auth = Base64.getEncoder().encodeToString(
-                "${System.getenv("MAVEN_CENTRAL_USERNAME")}:${System.getenv("MAVEN_CENTRAL_PASSWORD")}"
-                    .toByteArray()
-            )
-            val response = HttpClient.newHttpClient().send(
-                HttpRequest.newBuilder()
-                    .uri(uri(path))
-                    .POST(HttpRequest.BodyPublishers.noBody())
-                    .header("Authorization", "Bearer $auth")
-                    .build(), HttpResponse.BodyHandlers.ofString()
-            )
-            assert(response.statusCode() == 200) {
-                response.body()
-            }
-        }
-    }
-
-    jar {
-        manifest {
-            attributes(
-                "Implementation-Title" to rootProject.name,
-                "Implementation-Version" to project.version,
-                "Implementation-Vendor" to author
-            )
-        }
-    }
-
-    runServer {
-        minecraftVersion(mcVersion)
-    }
-
-    processResources {
-        val props = mapOf(
-            "version" to version,
-            "mcVersion" to mcVersion,
-            "pluginId" to pluginId,
-            "author" to author,
-            "description" to project.description,
-            "bukkitLibraries" to '[' + bukkitLibraries.joinToString(",") { "\"$it\"" } + ']'
+tasks.register("publishMavenCentral") {
+    description = ""
+    dependsOn("publishAllPublicationsToMavenCentralRepository")
+    doLast {
+        val path =
+            "https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/$namespace?publishing_type=automatic"
+        val auth = Base64.getEncoder().encodeToString(
+            "${System.getenv("MAVEN_CENTRAL_USERNAME")}:${System.getenv("MAVEN_CENTRAL_PASSWORD")}"
+                .toByteArray()
         )
-        inputs.properties(props)
-        filteringCharset = "UTF-8"
-        filesMatching("plugin.yml") {
-            expand(props)
+        val response = HttpClient.newHttpClient().send(
+            HttpRequest.newBuilder()
+                .uri(uri(path))
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .header("Authorization", "Bearer $auth")
+                .build(), HttpResponse.BodyHandlers.ofString()
+        )
+        assert(response.statusCode() == 200) {
+            response.body()
         }
+    }
+}
+
+tasks.jar {
+    manifest {
+        attributes(
+            "Implementation-Title" to rootProject.name,
+            "Implementation-Version" to project.version,
+            "Implementation-Vendor" to author
+        )
+    }
+}
+
+tasks.runServer {
+    minecraftVersion(mcVersion)
+}
+
+tasks.processResources {
+    val props = mapOf(
+        "version" to version,
+        "mcVersion" to mcVersion,
+        "pluginId" to pluginId,
+        "author" to author,
+        "description" to project.description,
+        "bukkitLibraries" to '[' + bukkitLibraries.joinToString(",") { "\"$it\"" } + ']'
+    )
+    inputs.properties(props)
+    filteringCharset = "UTF-8"
+    filesMatching("plugin.yml") {
+        expand(props)
     }
 }
 
