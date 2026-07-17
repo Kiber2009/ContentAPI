@@ -35,7 +35,8 @@ tasks {
         description = ""
         dependsOn("publishAllPublicationsToMavenCentralRepository")
         doLast {
-            val path = "https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/$namespace?publishing_type=automatic"
+            val path =
+                "https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/$namespace?publishing_type=automatic"
             val auth = Base64.getEncoder().encodeToString(
                 "${System.getenv("MAVEN_CENTRAL_USERNAME")}:${System.getenv("MAVEN_CENTRAL_PASSWORD")}"
                     .toByteArray()
@@ -94,6 +95,9 @@ repositories {
 dependencies {
     @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
     compileOnly("io.papermc.paper:paper-api:${mcVersion}.build.+")
+
+    compileOnly("org.apache.httpcomponents:httpclient:4.5.14")
+    compileOnly("org.apache.httpcomponents:httpmime:4.5.14")
 }
 
 java {
