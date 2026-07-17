@@ -74,7 +74,8 @@ tasks {
             "mcVersion" to mcVersion,
             "pluginId" to pluginId,
             "author" to author,
-            "description" to project.description
+            "description" to project.description,
+            "bukkitLibraries" to '[' + bukkitLibraries.joinToString(",") { "\"$it\"" } + ']'
         )
         inputs.properties(props)
         filteringCharset = "UTF-8"
@@ -92,12 +93,19 @@ repositories {
     }
 }
 
+val bukkitLibraries = mutableListOf<String>()
+
+fun DependencyHandlerScope.bukkitLibrary(dependencyNotation: Any): Dependency? {
+    bukkitLibraries.add(dependencyNotation.toString())
+    return compileOnly(dependencyNotation)
+}
+
 dependencies {
     @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
     compileOnly("io.papermc.paper:paper-api:${mcVersion}.build.+")
 
-    compileOnly("org.apache.httpcomponents:httpclient:4.5.14")
-    compileOnly("org.apache.httpcomponents:httpmime:4.5.14")
+    bukkitLibrary("org.apache.httpcomponents:httpclient:4.5.14")
+    bukkitLibrary("org.apache.httpcomponents:httpmime:4.5.14")
 }
 
 java {

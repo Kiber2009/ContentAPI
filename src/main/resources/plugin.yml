@@ -4,5 +4,4 @@ main: io.github.kiber2009.plugin.contentapi.ContentApiPlugin
 api-version: $mcVersion
 author: $author
 description: $description
-libraries:
-  - org.apache.httpcomponents:httpmime:4.5.14
+libraries: $bukkitLibraries
